@@ -68,6 +68,31 @@ class FlyingCreature(Creature):
             target.hp = 0
         print(f"{target.name} HP is now {target.hp}")
 
+# ===============================
+# FireCreature Branch
+# ===============================
+
+class FireCreature(Creature):
+    def __init__(self, name, hp, attack_power):
+        super().__init__(name, hp, attack_power)
+        self.fire_level = 0
+        if not (0 <= self.fire_level <= 100):
+            raise ValueError("fire_level must be between 0-100")
+
+    def emit_fire(self, new_fire_level):
+        self.fire_level = new_fire_level
+        print(f"{self.name} emits {self.fire_level} fire level.")
+
+    def attack(self, target):
+        print(f"{self.name} raise they fire level for {self.fire_level}!")
+        print(f"{self.name} performs 'Blazing Strike' on {target.name} for {self.attack_power} damage!")
+        print(f"{target.name} got {self.fire_level} burn damage!")
+        target.hp -= self.attack_power
+        target.hp -= self.fire_level
+        if target.hp < 0:
+            target.hp = 0
+        print(f"{target.name} HP is now {target.hp}")
+
 if __name__ == "__main__":
     print("=== Creature Class Tests ===\n")
 
@@ -139,6 +164,25 @@ if __name__ == "__main__":
     hawk.attack(dummy)
     print(f"Dummy HP should be 32 → Actual: {dummy.hp}")
     dummy.attack(hawk)
+    print()
+    print("=== Tests Completed ===")
+    print()
+
+    print("=== FireCreature Tests ===\n")
+    johnfire = FireCreature("Philip", 50, 6)
+    print()
+
+    print("---Emit fire test---")
+    johnfire.emit_fire(20)
+    print(f"Fire level should be 20 → Actual: {johnfire.fire_level}")
+    print()
+
+    print("---Attack test---")
+    j_dummy = Creature("Jane Dummy", 40, 0)
+    johnfire.attack(j_dummy)
+    print()
+    print(f"Dummy HP should be 14 (HP (40) - (atkdmg (6) + firedmg (20))) → Actual: {j_dummy.hp}")
+    j_dummy.attack(johnfire)
     print()
     print("=== Tests Completed ===")
     print()
